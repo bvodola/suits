@@ -1,0 +1,9 @@
+{
+	"local_app_name": "suits",
+	"wf_app_name": "suits_app",
+	"wf_server": "web506.webfaction.com",
+	"wf_username": "bvodola",
+	"mongo_url": "mongodb://suits:qZwX1001@ds013222.mlab.com:13222/suits",
+	"wf_port": "11595",
+	"wf_root_url": "http://suits.advocaciamg.adv.br"
+}

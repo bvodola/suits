@@ -1,0 +1,227 @@
+<head>
+  <title>Suits</title>
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
+
+<template name="main">
+  <div class="ui container main-content">
+    <h1>Suits</h1>
+    <a href="/">Agenda</a> |
+    <a href="/addClient">Novo Cliente</a> |
+    <a href="/addTask">Nova Tarefa</a> |
+    <a href="/addAttribute">Novo Atributo</a>
+    {{ > Template.dynamic template=content }}
+  </div>
+</template>
+
+<!-- ****** -->
+<!-- agenda -->
+<!-- ****** -->
+<template name="agenda">
+  <h1>Agenda</h1>
+  <div class="ui stackable grid">
+    <div class="two wide column">
+      <input class="date-picker" id="selectedDatePicker" placeholder="Mudar Data">  
+    </div>
+    <div class="six wide column">
+      <input name="isCompleteFilter" type="checkbox" id="isCompleteFilter">
+      <label for="isCompleteFilter">Esconder Tarefas Completas</label>
+    </div>
+  </div>
+      
+      
+  <table class="ui single line table">
+    <thead>
+      <tr>
+        <th>&nbsp;</th>
+        <th>Horário</th>
+        <th>Cliente</th>
+        <th>Tarefa</th>
+        <th>Ações</th>
+      </tr>
+    </thead>
+    <tbody>
+    {{ #each task in tasks }}
+      {{ > taskRow task=task }}
+    {{ /each }}
+    </tbody>
+  </table>
+  <script type="text/javascript">
+    // Activate Date Picker
+    $('.date-picker').bootstrapMaterialDatePicker({
+      format:'DD/MM/YYYY',
+      time: false,
+      cancelText: 'Cancelar',
+      switchOnClick: true
+    });
+  </script>
+</template>
+
+<!-- ******* -->
+<!-- taskRow -->
+<!-- ******* -->
+<template name="taskRow">
+  <tr class="{{ checked task.is_complete }}">
+    <td>
+      <input type="checkbox" class="editable" name="is_complete" {{ checked task.is_complete }}>
+    </td>
+    <td><input type="text" class="editable time-picker" name="time" value="{{ task.time }}"></td>
+    <td>{{ getClient task.client_id }}</td>
+    <td>
+      <input type="text" class="editable" name="description" value="{{ task.description }}">
+    </td>
+    <td>
+      <button name="date" value="{{ task.date }}" data-content="Alterar Data" class="popup-target circular ui blue icon button date-picker">
+        <i class="calendar icon"></i>
+      </button>
+      <button data-content="Excluir" class="popup-target circular ui red icon button  remove-task"><i class="trash icon"></i></button>
+    </td>
+  </tr>
+  <script type="text/javascript">
+    // Activate Time Picker
+    $('.time-picker').bootstrapMaterialDatePicker({
+      format:'HH:mm',
+      date: false,
+      cancelText: 'Cancelar',
+      switchOnClick: true
+    });
+
+    // Activate Date Picker
+    $('.date-picker').bootstrapMaterialDatePicker({
+      format:'DD/MM/YYYY',
+      time: false,
+      cancelText: 'Cancelar',
+      switchOnClick: true
+    });
+
+    // Activate Popups
+    $('.popup-target').popup();
+  </script>
+</template>
+
+<!-- ******* -->
+<!-- addTask -->
+<!-- ******* -->
+<template name="addTask">
+<form class="ui form" id="addTaskForm">
+    <h4 class="ui dividing header">Criar Tarefa</h4>
+    <div class="fields">
+    <div class="five wide field">
+        <label>Cliente</label>
+        <select class="ui search dropdown client-select" name="client">
+          <option value="">Selecione...</option>
+          {{ #each client in clients }}
+            <option value="{{client._id}}">{{client.name}}</option>
+          {{ /each }}
+        </select>
+      </div>
+      <div class="five wide field">
+        <label>Descrição</label>
+        <input type="text" name="description">
+      </div>
+      <div class="two wide field">
+        <label>Data</label>
+        <input type="text" name="date" class="date-picker">
+      </div>
+      <div class="two wide field">
+        <label>Horário</label>
+        <input type="text" name="time" class="time-picker">
+      </div>
+      <div class="two wide field">
+      <label>&nbsp;</label>
+        <button class="circular ui green icon button" type="submit">
+          <i class="icon plus"></i>
+        </button>
+      </div>
+      
+    </div>
+  </form>
+  <script type="text/javascript">
+    // Activate Dropdown
+    $(".client-select").dropdown();
+
+        // Activate Time Picker
+    $('.time-picker').bootstrapMaterialDatePicker({
+      format:'HH:mm',
+      date: false,
+      cancelText: 'Cancelar',
+      switchOnClick: true
+    });
+
+    // Activate Date Picker
+    $('.date-picker').bootstrapMaterialDatePicker({
+      format:'DD/MM/YYYY',
+      time: false,
+      cancelText: 'Cancelar',
+      switchOnClick: true
+    });
+  </script>
+</template>
+
+<!-- ********* -->
+<!-- addClient -->
+<!-- ********* -->
+<template name="addClient">
+  <h1>Cadastrar Cliente</h1>
+  <form class="ui form" id="addClientForm">
+    <div class="client-field field">
+      <label>Nome Completo</label>
+      <input type="text" name="name">
+    </div>
+    <h4 class="ui dividing header">Atributos</h4>
+    {{ #each attribute in attributes }}
+      {{ > attributeFormRow attribute=attribute }}
+    {{ /each }}
+
+    <button class="ui green button" type="submit">Cadastrar Cliente</button>
+  </form>
+
+</template>
+
+<!-- **************** -->
+<!-- attributeFormRow -->
+<!-- **************** -->
+<template name="attributeFormRow">
+  <div class="attribute-field field">
+    <label>{{ attribute.name }}</label>
+    {{{ attributeWidget attribute true }}}
+  </div>
+  <script type="text/javascript">
+    $(".ui.dropdown").dropdown();
+  </script>
+</template>
+
+
+<!-- ************ -->
+<!-- addAttribute -->
+<!-- ************ -->
+<template name="addAttribute">
+  <form class="ui form" id="addAttributeForm">
+    <h4 class="ui dividing header">Criar Atributo</h4>
+    <div class="fields">
+      <div class="eight wide field">
+        <label>Nome do Atributo</label>
+        <input type="text" name="name">
+      </div>
+      <div class="eight wide field">
+        <label>Tipo de Atributo</label>
+        <select name="type" class="ui dropdown attribute-type">
+          <option value="text">Texto Curto</option>
+          <option value="textarea">Texto Longo</option>
+          <option value="checkbox">Sim ou Não</option>
+          <option value="select">Alternativas</option>
+          <option value="multipleSelect">Múltiplas Escolhas</option>
+        </select>
+      </div>
+    </div>
+    <div class="field options-field">
+      <label>Opções</label>
+      <input type="text" name="options">
+    </div>
+    <input type="submit" class="ui green button" value="Cadastrar">
+  </form>
+
+  <script type="text/javascript">
+    $(".ui.dropdown").dropdown();
+  </script>
+</template>

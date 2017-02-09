@@ -1,0 +1,43 @@
+#selectedDatePicker
+	display: inline
+	border: 0px none
+	border-bottom: 1px dashed #aaa
+	border-image: none
+	width: 100px
+	text-align: center
+	font-size: 15px
+	font-weight: bold
+	cursor: pointer
+
+input.editable
+	box-sizing: border-box
+	border: 1px solid #fff
+	width: 100%
+	padding: 9.5px 14px
+	cursor: url("https://cdn2.iconfinder.com/data/icons/flat-ui-icons-24-px/24/new-24-24.png"), auto
+	transition: all 0.2s ease
+
+input.editable:hover
+	transition: border-bottom 0.5s ease
+
+input.editable:focus
+	cursor: text
+	transition: all 0.5s ease
+	border-radius: 3px
+	border: 1px solid #85b7d9
+
+input[type=checkbox].editable
+	cursor: initial
+
+tr
+	transition: all 0.2s ease
+
+tr.checked
+	background: #eee
+	transition: all 0.2s ease
+	color: #ccc
+
+	input
+		background: #eee
+		border: 1px solid #eee
+		transition: all 0.2s ease
